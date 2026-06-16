@@ -33,7 +33,7 @@ export const typeDefs = `
     ping:         String
     customers:    [Customer!]!
     customer(id: String!): Customer
-    leads:        [Lead!]!
+    leads:        [Lead]!
     lead(id: String!): Lead
   }
 

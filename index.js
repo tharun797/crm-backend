@@ -8,6 +8,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { testConnection } from './db/connection.js';
+import pool from './db/connection.js'; // ← ADD THIS
+
 
 dotenv.config();
 
@@ -37,12 +39,6 @@ const wsServer = new WebSocketServer({
 
 useServer({ schema }, wsServer);
 
-await testConnection();
-
-app.get('/seed', async (req, res) => {
-  await seedData();
-  res.json({ status: '✅ Seed complete' });
-});
 
 const seedData = async () => {
 
@@ -80,7 +76,17 @@ const seedData = async () => {
   console.log('✅ leads inserted');
 };
 
-await seedData();
+
+app.get('/seed', async (req, res) => {
+  await seedData();
+  res.json({ status: '✅ Seed complete' });
+});
+
+
+
+
+await testConnection();
+
 
 const PORT = process.env.PORT || 4000;
 httpServer.listen(PORT, () => {

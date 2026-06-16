@@ -21,19 +21,19 @@ export const resolvers = {
       return rows[0] ?? null;
     },
 
-     leads: async () => {
-      const [rows] = await pool.execute(
-        'SELECT * FROM leads ORDER BY created_at DESC'
-      );
-      return rows;
-    },
+   leads: async () => {
+  const [rows] = await pool.execute(
+    'SELECT * FROM leads ORDER BY created_at DESC'
+  );
+  return rows;
+},
 
-    leads: async (_, { id }) => {
-      const [rows] = await pool.execute(
-        'SELECT * FROM leads WHERE id = ?', [id]
-      );
-      return rows[0] ?? null;
-    },
+lead: async (_, { id }) => {
+  const [rows] = await pool.execute(
+    'SELECT * FROM leads WHERE id = ?', [id]
+  );
+  return rows[0] ?? null;
+},
   },
 
   Subscription: {

@@ -20,6 +20,20 @@ export const resolvers = {
       );
       return rows[0] ?? null;
     },
+
+     leads: async () => {
+      const [rows] = await pool.execute(
+        'SELECT * FROM leads ORDER BY created_at DESC'
+      );
+      return rows;
+    },
+
+    leads: async (_, { id }) => {
+      const [rows] = await pool.execute(
+        'SELECT * FROM leads WHERE id = ?', [id]
+      );
+      return rows[0] ?? null;
+    },
   },
 
   Subscription: {
@@ -33,6 +47,18 @@ export const resolvers = {
     },
     customerDeleted: {
       subscribe: () => pubsub.subscribe('CUSTOMER_DELETED'),
+      resolve:   (payload) => payload,
+    },
+    leadAdded: {
+      subscribe: () => pubsub.subscribe('LEAD_ADDED'),
+      resolve:   (payload) => payload,
+    },
+    leadUpdated: {
+      subscribe: () => pubsub.subscribe('LEAD_UPDATED'),
+      resolve:   (payload) => payload,
+    },
+    leadDeleted: {
+      subscribe: () => pubsub.subscribe('LEAD_DELETED'),
       resolve:   (payload) => payload,
     },
   },

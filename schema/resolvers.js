@@ -34,6 +34,26 @@ lead: async (_, { id }) => {
   );
   return rows[0] ?? null;
 },
+deals: async () => {
+    const [rows] = await pool.execute(
+      'SELECT * FROM deals ORDER BY created_at DESC'
+    );
+    return rows;
+  },
+
+  deal: async (_, { id }) => {
+    const [rows] = await pool.execute(
+      'SELECT * FROM deals WHERE id = ?', [id]
+    );
+    return rows[0] ?? null;
+  },
+
+  dealsByStage: async (_, { stage }) => {
+    const [rows] = await pool.execute(
+      'SELECT * FROM deals WHERE stage = ? ORDER BY created_at DESC', [stage]
+    );
+    return rows;
+  },
   },
 
   Subscription: {
@@ -61,6 +81,18 @@ lead: async (_, { id }) => {
       subscribe: () => pubsub.subscribe('LEAD_DELETED'),
       resolve:   (payload) => payload,
     },
+    dealAdded: {
+    subscribe: () => pubsub.subscribe('DEAL_ADDED'),
+    resolve:   (payload) => payload,
+  },
+  dealUpdated: {
+    subscribe: () => pubsub.subscribe('DEAL_UPDATED'),
+    resolve:   (payload) => payload,
+  },
+  dealDeleted: {
+    subscribe: () => pubsub.subscribe('DEAL_DELETED'),
+    resolve:   (payload) => payload,
+  },
   },
 };
 

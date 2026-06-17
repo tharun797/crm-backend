@@ -29,12 +29,29 @@ export const typeDefs = `
     updated_at:   String!
   }
 
+  type Deal {
+  id:                   String!
+  title:                String!
+  value:                Float!
+  stage:                String!
+  customer_id:          String!
+  assigned_to:          String
+  expected_close_date:  String
+  notes:                String
+  created_at:           String!
+  updated_at:           String!
+}
+
+
   type Query {
     ping:         String
     customers:    [Customer!]!
     customer(id: String!): Customer
     leads:        [Lead]!
     lead(id: String!): Lead
+     deals:      [Deal!]!
+  deal(id: String!): Deal
+  dealsByStage(stage: String!): [Deal!]!
   }
 
   type Subscription {
@@ -44,5 +61,8 @@ export const typeDefs = `
     leadAdded:       Lead!
     leadUpdated:     Lead!
     leadDeleted:     String!
+     dealAdded:       Deal!
+  dealUpdated:     Deal!
+  dealDeleted:     String!
   }
 `;

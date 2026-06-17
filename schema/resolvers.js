@@ -54,6 +54,33 @@ deals: async () => {
     );
     return rows;
   },
+  tasks: async () => {
+  const [rows] = await pool.execute(
+    'SELECT * FROM tasks ORDER BY due_date ASC'
+  );
+  return rows;
+},
+
+task: async (_, { id }) => {
+  const [rows] = await pool.execute(
+    'SELECT * FROM tasks WHERE id = ?', [id]
+  );
+  return rows[0] ?? null;
+},
+
+tasksByStatus: async (_, { status }) => {
+  const [rows] = await pool.execute(
+    'SELECT * FROM tasks WHERE status = ? ORDER BY due_date ASC', [status]
+  );
+  return rows;
+},
+
+tasksByPriority: async (_, { priority }) => {
+  const [rows] = await pool.execute(
+    'SELECT * FROM tasks WHERE priority = ? ORDER BY due_date ASC', [priority]
+  );
+  return rows;
+},
   },
 
   Subscription: {
@@ -93,6 +120,18 @@ deals: async () => {
     subscribe: () => pubsub.subscribe('DEAL_DELETED'),
     resolve:   (payload) => payload,
   },
+  taskAdded: {
+  subscribe: () => pubsub.subscribe('TASK_ADDED'),
+  resolve:   (payload) => payload,
+},
+taskUpdated: {
+  subscribe: () => pubsub.subscribe('TASK_UPDATED'),
+  resolve:   (payload) => payload,
+},
+taskDeleted: {
+  subscribe: () => pubsub.subscribe('TASK_DELETED'),
+  resolve:   (payload) => payload,
+},
   },
 };
 

@@ -42,6 +42,21 @@ export const typeDefs = `
   updated_at:           String!
 }
 
+type Task {
+  id:          String!
+  title:       String!
+  description: String
+  status:      String!
+  priority:    String!
+  due_date:    String
+  assigned_to: String
+  customer_id: String
+  deal_id:     String
+  lead_id:     String
+  created_at:  String!
+  updated_at:  String!
+}
+
 
   type Query {
     ping:         String
@@ -52,6 +67,10 @@ export const typeDefs = `
      deals:      [Deal!]!
   deal(id: String!): Deal
   dealsByStage(stage: String!): [Deal!]!
+  tasks:              [Task!]!
+task(id: String!):  Task
+tasksByStatus(status: String!):   [Task!]!
+tasksByPriority(priority: String!): [Task!]!
   }
 
   type Subscription {
@@ -64,5 +83,8 @@ export const typeDefs = `
      dealAdded:       Deal!
   dealUpdated:     Deal!
   dealDeleted:     String!
+  taskAdded:   Task!
+taskUpdated: Task!
+taskDeleted: String!
   }
 `;
